@@ -47,7 +47,8 @@ train = [
         learningRatesPerMB = 0.5:0.1
         momentumPerMB = 0.9
         maxEpochs = 2
-        batchNormalizationBlendTimeConstant=0:1#INF
+        #batchNormalizationBlendTimeConstant=0:1#INF
+        batchNormalizationBlendTimeConstant=0
     ]
 
     reader = [
