@@ -1670,6 +1670,13 @@ public:
         }
 
         m_doPrint = true;
+
+        // TODO
+        // For CuDNN4 -> CuDNN 5 transformation
+        // modify runInvStdDev = Input(4)->Value();
+        // m_epsilon 
+        // n/n-1*(1/(old*old) - epsilon)
+        // m_mbCount / (m_mbCount -1) * (1/(old*old) - m_epsilon.
     }
 
     void CopyTo(ComputationNodeBasePtr nodeP, const std::wstring& newName, const CopyNodeFlags flags) const override
@@ -1704,7 +1711,7 @@ private: // time-constant conversions
         if (m_normTimeConst < 0)
             return 1.0 / (1.0 + m_mbCount); // (this is the hack case) TODO: verify this formula; shouldn't we use #samples instead of MB count?
 
-        // Convert to per-minibatch factor. The limit, positivie infinity, means that running mean/var parameters are "frozen"
+        // Convert to per-minibatch factor. The limit, positive infinity, means that running mean/var parameters are "frozen"
         // that is, do not require updates.
         // The code below special-cases two boundary cases, but those are just the limit cases of the main formula.
         double numSamples = (double)GetMBLayout()->GetActualNumSamples();
@@ -1788,8 +1795,10 @@ public:
             // The mean used in Forward() are either saveMean or runMean.
             // This is decided by the engine, which communicates back the decision by returning
             // an empty saveMean in case runMean should be used. Likewise for stddev.
+            if (m_saveInvStdDev->IsEmpty())
+                RuntimeError("TODO convert");
             let& actualMean      = !m_saveMean->IsEmpty()      ? *m_saveMean      : runMean;      // empty if only the running mean is used
-            let& actualInvStdDev = !m_saveInvStdDev->IsEmpty() ? *m_saveInvStdDev : runInvStdDev;
+            let& actualInvStdDev = !m_saveInvStdDev->IsEmpty() ? *m_saveInvStdDev : runInvStdDev; // TODO saveInvStdDev <-> runInvStdDev not the same
             m_dScale->Resize(scale); // gradients for scale and bias get stored here
             m_dBias->Resize(bias);
 
