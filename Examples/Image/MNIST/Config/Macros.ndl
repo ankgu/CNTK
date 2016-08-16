@@ -28,7 +28,7 @@ DnnBNReLULayer(inDim, outDim, x, wScale, bValue, scValue, bnTimeConst) = [
     m = LearnableParameter(outDim, 1, init = fixedValue, value = 0, learningRateMultiplier = 0)
     isd = LearnableParameter(outDim, 1, init = fixedValue, value = 0, learningRateMultiplier = 0)
     t = Times(W, x)
-    bn = BatchNormalization(t, sc, b, m, isd, eval = false, spatial = false, normalizationTimeConstant = bnTimeConst)
+    bn = BatchNormalization(t, sc, b, m, isd, eval = false, spatial = false, normalizationTimeConstant = bnTimeConst, engine=cudnn)
     y = RectifiedLinear(bn)
 ]
 
@@ -75,7 +75,7 @@ ConvBNLayerW(W, inp, outMap, kW, kH, hStride, vStride, bValue, scValue, bnTimeCo
     isd = LearnableParameter(outMap, 1, init=fixedValue, value=0, learningRateMultiplier=0)
     
     c = Convolution(W, inp, kW, kH, outMap, hStride, vStride, zeroPadding=true, imageLayout=$imageLayout$)
-    y = BatchNormalization(c, sc, b, m, isd, eval=false, spatial=true, normalizationTimeConstant=bnTimeConst, imageLayout=$imageLayout$)
+    y = BatchNormalization(c, sc, b, m, isd, eval=false, spatial=true, normalizationTimeConstant=bnTimeConst, imageLayout=$imageLayout$, engine=cudnn)
 ]
 
 ConvBNLayer(inp, outMap, inWCount, kW, kH, hStride, vStride, wScale, bValue, scValue, bnTimeConst) = [
