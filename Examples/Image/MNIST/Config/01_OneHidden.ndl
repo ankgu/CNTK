@@ -18,8 +18,16 @@ DNN = [
     hiddenDim = 200
 
     # DNNSigmoidLayer and DNNLayer are defined in Macros.ndl
-    h1 = DNNSigmoidLayer(featDim, hiddenDim, featScaled, 1)
-    ol = DNNLayer(hiddenDim, labelDim, h1, 1)
+    #h1 = DNNSigmoidLayer(featDim, hiddenDim, featScaled, 1)
+    h1 = DNNLayer(featDim, hiddenDim, featScaled, 1)
+
+    b = LearnableParameter(hiddenDim, 1, init = fixedValue, value = 0) 
+    sc = LearnableParameter(hiddenDim, 1, init = fixedValue, value = 1) 
+    m = LearnableParameter(hiddenDim, 1, init = fixedValue, value = 0, learningRateMultiplier = 0)
+    isd = LearnableParameter(hiddenDim, 1, init = fixedValue, value = 0, learningRateMultiplier = 0)
+    y = BatchNormalization(h1, sc, b, m, isd, eval=false, spatial=false, normalizationTimeConstant=64, imageLayout=cudnn, engine=cudnn)
+
+    ol = DNNLayer(hiddenDim, labelDim, y, 1)
 
     ce = CrossEntropyWithSoftmax(labels, ol)
     errs = ErrorPrediction(labels, ol)
