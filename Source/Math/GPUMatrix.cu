@@ -41,7 +41,7 @@
 #define UNCONST(t, c, uc) GPUMatrix<t>& uc = const_cast<GPUMatrix<t>&>(c);
 
 #ifdef _WIN32
-// thread local storage to access the current stream, initalize to default stream
+// thread local storage to access the current stream, initialize to default stream
 __declspec(thread)
 #endif
     cudaStream_t t_stream = cudaStreamDefault;
@@ -62,7 +62,7 @@ cudaStream_t MATH_API GetStream()
     return t_stream;
 }
 
-// Helper macro patterns for elemtwise methods
+// Helper macro patterns for elementwise methods
 #define DEF_ELEMWISE_INPLACE_FUNC(f)                                      \
     template <class ElemType>                                             \
     GPUMatrix<ElemType>& GPUMatrix<ElemType>::Inplace##f()                \
@@ -3163,7 +3163,7 @@ void GPUMatrix<ElemType>::AveragePoolingBackward(const GPUMatrix<int>& mpRowCol,
 // returns saveMean/saveInvStdDev which are the actual values used to perform the normalization, except for blendFactor 1, in which case they are unused and set to empty
 template <class ElemType>
 void GPUMatrix<ElemType>::BatchNormalizationForward(const GPUMatrix<ElemType>& scale, const GPUMatrix<ElemType>& bias, double expAvgFactor, double blendFactor,
-                                                    GPUMatrix<ElemType>& runMean, GPUMatrix<ElemType>& runInvStdDev, GPUMatrix<ElemType>& out, double epsilon,
+                                                    GPUMatrix<ElemType>& runMean, GPUMatrix<ElemType>& runStdDev, GPUMatrix<ElemType>& out, double epsilon,
                                                     GPUMatrix<ElemType>& saveMean, GPUMatrix<ElemType>& saveInvStdDev) const
 {
     assert((GetNumRows() % scale.GetNumRows()) == 0);
@@ -3176,7 +3176,7 @@ void GPUMatrix<ElemType>::BatchNormalizationForward(const GPUMatrix<ElemType>& s
     assert(0 < vectorSize && vectorSize <= std::numeric_limits<int>::max());
     assert(0 < batchSize  && batchSize  <= std::numeric_limits<int>::max());
 
-    // --- compute data mean/stddev (into saveMean/saveInvStdDev) and update running mean/stddev
+    // --- compute data mean/invstddev (into saveMean/saveInvStdDev) and update running mean/stddev
     SyncGuard syncGuard;
     // If expAvgFactor == 0 && blendFactor == 1 then we don't need to compute current minibatch statistics.
     if (expAvgFactor > 0 || blendFactor < 1)
@@ -3186,13 +3186,13 @@ void GPUMatrix<ElemType>::BatchNormalizationForward(const GPUMatrix<ElemType>& s
         if (spatial)
         {
             Call<ComputeSpatialBatchMeanAndInvStdDev, ElemType>(spatialSize, vectorSize, spatialSize, batchSize, Data(),
-                                                                expAvgFactor, runMean.Data(), runInvStdDev.Data(), epsilon,
+                                                                expAvgFactor, runMean.Data(), runStdDev.Data(), epsilon,
                                                                 saveMean.Data(), saveInvStdDev.Data(), GetStream());
         }
         else
         {
             Call<ComputeBatchMeanAndInvStdDev, ElemType>(vectorSize, vectorSize, batchSize, Data(),
-                                                         expAvgFactor, runMean.Data(), runInvStdDev.Data(), epsilon,
+                                                         expAvgFactor, runMean.Data(), runStdDev.Data(), epsilon,
                                                          saveMean.Data(), saveInvStdDev.Data(), GetStream());
         }
     }
@@ -3213,13 +3213,14 @@ void GPUMatrix<ElemType>::BatchNormalizationForward(const GPUMatrix<ElemType>& s
         if (blendFactor > 0)
         {
             // REVIEW alexeyk: can be rolled into NormalizeBatchTraining to save bandwidth.
+            // TODO actually do that
             // TODO: add a 'beta' parameter to ScaleAndAdd()
             Scale((ElemType)(1 - blendFactor), saveMean);
             ScaleAndAdd((ElemType)blendFactor, /*in*/ runMean, /*in/out*/ saveMean);
             RuntimeError("TODO needs fixes blending %f.", blendFactor);
             Scale((ElemType)(1 - blendFactor), saveInvStdDev);
             // TODO Operations::RSqrt(static_cast<ElemType>(invStdDev[k] * (batchSize - 1) / batchSize + epsilon))
-            ScaleAndAdd((ElemType)blendFactor, runInvStdDev, saveInvStdDev);
+            ScaleAndAdd((ElemType)blendFactor, runStdDev, saveInvStdDev);
         }
         // normalize
         Call<NormalizeBatchTraining, ElemType>(spatial ? spatialSize : vectorSize, vectorSize, spatialSize, batchSize, spatial,
@@ -3231,16 +3232,13 @@ void GPUMatrix<ElemType>::BatchNormalizationForward(const GPUMatrix<ElemType>& s
     }
     else // blendFactor == 1: use running mean/stddev only
     {
-        // TODO won't work BUGBUG REVIEW runInvStdDev has different values than saveInvStdDev
-        //assert(!"TODO needs fixes");
-
         Call<NormalizeBatchTraining, ElemType>(spatial ? spatialSize : vectorSize, vectorSize, spatialSize, batchSize, spatial,
                                                Data(), out.Data(),
                                                scale.Data(), bias.Data(),
-                                               runMean.Data(), runInvStdDev.Data(),
+                                               runMean.Data(), runStdDev.Data(),
                                                true /* convert */,
                                                GetStream());
-        // CNTK engine returns saveMean and saveInvStdDev empty, but cnDNN engine does not.
+        // CNTK engine returns saveMean and saveInvStdDev empty, but cuDNN engine does not.
     }
 }
 

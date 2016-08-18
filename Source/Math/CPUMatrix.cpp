@@ -4417,7 +4417,7 @@ void CPUMatrix<ElemType>::AveragePoolingBackward(const CPUMatrix<int>& mpRowCol,
 
 template <class ElemType>
 void CPUMatrix<ElemType>::BatchNormalizationForward(const CPUMatrix<ElemType>& scale, const CPUMatrix<ElemType>& bias, double expAvgFactor, double blendFactor,
-                                                    CPUMatrix<ElemType>& runMean, CPUMatrix<ElemType>& runInvStdDev, CPUMatrix<ElemType>& out, double epsilon,
+                                                    CPUMatrix<ElemType>& runMean, CPUMatrix<ElemType>& runStdDev, CPUMatrix<ElemType>& out, double epsilon,
                                                     CPUMatrix<ElemType>& saveMean, CPUMatrix<ElemType>& saveInvStdDev) const
 {
     UNUSED(epsilon);
@@ -4440,7 +4440,9 @@ void CPUMatrix<ElemType>::BatchNormalizationForward(const CPUMatrix<ElemType>& s
             for (long irow = 0; irow < out.GetNumRows(); irow++)
             {
                 size_t imap = irow / spatialSize;
-                out(irow, icol) = scale(imap, 0) * ((*this)(irow, icol) - runMean(imap, 0)) * runInvStdDev(imap, 0) + bias(imap, 0);
+                // TODO out(irow, icol) = scale(imap, 0) * ((*this)(irow, icol) - runMean(imap, 0)) * runInvStdDev(imap, 0) + bias(imap, 0);
+                RuntimeError("TODO need to fix runStdDev <-> runInvStdDev");
+                out(irow, icol) = scale(imap, 0) * ((*this)(irow, icol) - runMean(imap, 0)) * runStdDev(imap, 0) + bias(imap, 0);
             }
         }
     }
@@ -4451,7 +4453,9 @@ void CPUMatrix<ElemType>::BatchNormalizationForward(const CPUMatrix<ElemType>& s
         {
             for (long irow = 0; irow < out.GetNumRows(); irow++)
             {
-                out(irow, icol) = scale(irow, 0) * ((*this)(irow, icol) - runMean(irow, 0)) * runInvStdDev(irow, 0) + bias(irow, 0);
+                // TODO out(irow, icol) = scale(irow, 0) * ((*this)(irow, icol) - runMean(irow, 0)) * runInvStdDev(irow, 0) + bias(irow, 0);
+                RuntimeError("TODO need to fix runStdDev <-> runInvStdDev");
+                out(irow, icol) = scale(irow, 0) * ((*this)(irow, icol) - runMean(irow, 0)) * runStdDev(irow, 0) + bias(irow, 0);
             }
         }
     }

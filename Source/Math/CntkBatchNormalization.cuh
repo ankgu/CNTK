@@ -153,22 +153,22 @@ void Call(size_t vectorSize, Targs... args)
 //--------------------------------------------------------------------
 
 // The kernel implements online, parallel and numerically stable algorithm 
-// for computing batch mean and variance (here inverse standard deviation) with one pass over the data.
+// for computing batch mean and variance (and inverse standard deviation) with one pass over the data.
 // It uses algorithms by Knuth/Welford and Chan et al (http://i.stanford.edu/pub/cstr/reports/cs/tr/79/773/CS-TR-79-773.pdf)
 // In short, algorithm has 2 steps:
 // 1. Each thread strides over the input and computes mean and 
-//    m2 value (used to compute variance at the end) - Welford algorithm.
+//    m2 value (used to compute variance and inverse standard deviation at the end) - Welford algorithm.
 // 2. Parallel reduction (Chan algorithm) performed by columns (note that 
 //    thread block and grid X dimensions go along the vector and Y dimension - along the batch).
-//    As a result, each block has 2 * blockDim.x (mean and inverse stddev) values to write at the end.
+//    As a result, each block has 2 * blockDim.x (mean and inverse stddev TODO 3 now?) values to write at the end.
 //    
 template <int BlockDimX, int BlockDimY, int U, typename ElemType>
 __global__ void kComputeBatchMeanAndInvStdDev(int vectorSize, int batchSize,
                                               const ElemType* x,                         // (in) input data
                                               double expAvgFactor,
-                                              ElemType* runMean, ElemType* runInvStdDev, // (in/out) running mean/stddev, gets updated with current minibatch
+                                              ElemType* runMean, ElemType* runStdDev,    // (in/out) running mean/stddev, gets updated with current minibatch
                                               double epsilon,
-                                              ElemType* xMean, ElemType* xInvStdDev)     // (out) this minibatch's mean
+                                              ElemType* xMean, ElemType* xInvStdDev)     // (out) this minibatch's mean and inverse stddev
 {
     static_assert(BlockDimX * U == CUB_PTX_WARP_THREADS, "BlockDimX * U must be equal to warp size (32).");
     static_assert((BlockDimX * BlockDimY % CUB_PTX_WARP_THREADS) == 0, "Block size must be a multiple of warp size (32).");
@@ -191,7 +191,8 @@ __global__ void kComputeBatchMeanAndInvStdDev(int vectorSize, int batchSize,
     // first estimate mean over all data for this thread
     int n = 0;
     ElemType mean[U]; // this thread's part of the mean vector (stored as a normalized mean also during accumulation)
-    ElemType m2[U];   // likewise for stdev
+    ElemType m2[U];   // likewise for stddev
+    ElemType im2[U];  // and inverted stddev
 #pragma unroll
     for (int k = 0; k < U; k++)
     {
@@ -310,32 +311,29 @@ __global__ void kComputeBatchMeanAndInvStdDev(int vectorSize, int batchSize,
         // at this point, runMean[] has been updated
 
         // Store inv std dev and its running version.
-#if 1
-        ElemType u[U];
-
 #pragma unroll
         for (int k = 0; k < U; k++)
         {
-            //m2[k] = Operations::RSqrt(static_cast<ElemType>(m2[k] / batchSize + epsilon));
-            u[k] = Operations::RSqrt(static_cast<ElemType>(m2[k] / batchSize + epsilon));
+            im2[k] = Operations::RSqrt(static_cast<ElemType>(m2[k] / batchSize + epsilon));
             m2[k] = m2[k] / (batchSize - 1);
         }
 #endif
-        StoreValues<U>(u, xInvStdDev + idxDstBase);
-        // at this point, minibatch stddev has been saved into xInvStdDev[]
+        StoreValues<U>(im2, xInvStdDev + idxDstBase);
+        // at this point, minibatch inverted stddev has been saved into xInvStdDev[]
 
         if (expAvgFactor == 1)
-            StoreValues<U>(m2, runInvStdDev + idxDstBase);
+            StoreValues<U>(m2, runStdDev + idxDstBase);
         else
         {
+            // TODO this case is tested?
             ElemType run[U];
-            LoadValues<U>(runInvStdDev + idxDstBase, run);
+            LoadValues<U>(runStdDev + idxDstBase, run);
 #pragma unroll
             for (int k = 0; k < U; k++)
                 run[k] = expAvgFactor * m2[k] + (1.0 - expAvgFactor) * run[k];
-            StoreValues<U>(run, runInvStdDev + idxDstBase);
+            StoreValues<U>(run, runStdDev + idxDstBase);
         }
-        // at this point, runInvStdDev[] has been updated
+        // at this point, runStdDev[] has been updated
     }
 }
 

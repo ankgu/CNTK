@@ -1534,7 +1534,7 @@ template class DropoutNode<float>;
 template class DropoutNode<double>;
 
 // -----------------------------------------------------------------------
-// BatchNormalizationNode (input, scale, bias, runMean, runInvStdDev,
+// BatchNormalizationNode (input, scale, bias, runMean, runStdDev,
 //                         spatial, normalizationTimeConstant = 0, blendTimeConstant = 0,
 //                         epsilon = 0.00001,
 //                         useCntkEngine = true, imageLayout = 'cudnn')
@@ -1560,18 +1560,18 @@ template class DropoutNode<double>;
 //              More correct would be to infer that from broadcasting dimensions (spatial mode is broadcasting).
 // * runMean is the running mean which is used during evaluation phase and might be used during training as well.
 //      It is represented as a LearnableParameter with the same dimensions as scale and bias.
-// * runInvStdDev is the running inverse square root of variance(so InvStdDev = 1 / sqrt(var + epsilon)).
+// * runStdDev is the running variance which is used during evaluation phase and might be used during training as well.
 //      It is represented as a LearnableParameter with the same dimensions as scale and bias.
-// * spatial is a flag that specifies whether to compute mean / var for each feature in a mininbatch independently or, in case of convolutional layers, per feature map.
+// * spatial is a flag that specifies whether to compute mean / var for each feature in a minibatch independently or, in case of convolutional layers, per feature map.
 //      TODO: This must be configured in a generic fashion where tensor axes are chosen along which parameters are tied.
 // * normalizationTimeConstant is the time constant which is used to compute running average of mean and variance.
-//      Value 0 (default) means there will be no exponential smoothing and running mean/variance will always have values computed for the last seen mininbatch.
-//      Value 1#INF (infinity) means running values are "frozen" (i.e.will not be updated).
+//      Value 0 (default) means there will be no exponential smoothing and running mean/variance will always have values computed for the last seen minibatch.
+//      Value 1#INF (infinity) means running values are "frozen" (i.e., they will not be updated).
 // * blendTimeConstant is the time constant which allows to specify how much of running mean / var should be "blended" into mean / var of the current minibatch.
 //      Value 0 (default) means no blending will happen and only the current minibatch statistics will be used.
 //      Value 1#INF (infinity) means only running mean / var will be used(this is used, for example, in evaluation phase).
 // * epsilon is a conditioner constant used in computing InvStdDev
-// * useCntkEngine is a boolean flag that specifies which batch normalization implementation to use : CNTK or cuDNN-based.
+// * useCntkEngine is a boolean flag that specifies which batch normalization implementation to use: CNTK or cuDNN-based.
 // * imageLayout is the image layout. Only cudnn is supported at present.
 // -----------------------------------------------------------------------
 template <class ElemType>
@@ -1583,13 +1583,15 @@ class BatchNormalizationNode : public ComputationNodeNonLooping<ElemType>, publi
 public:
     BatchNormalizationNode(DEVICEID_TYPE deviceId, const wstring& name) :
         Base(deviceId, name), m_spatial(false), m_normTimeConst(0), m_blendTimeConst(0), m_epsilon(0), m_useCntkEngine(true),
-        m_mbCount(0), m_imageLayoutKind(ImageLayoutKind::CHW)
+        m_mbCount(0), m_imageLayoutKind(ImageLayoutKind::CHW),
+        m_doPrint(false), m_convertRunningVariance(false)
     {
     }
     BatchNormalizationNode(DEVICEID_TYPE deviceId, const wstring& name, bool spatial, double normalizationTimeConstant, double blendTimeConstant,
                            double epsilon, bool useCntkEngine, ImageLayoutKind imageLayoutKind) :
         Base(deviceId, name), m_spatial(spatial), m_normTimeConst(normalizationTimeConstant), m_blendTimeConst(blendTimeConstant),
-        m_epsilon(epsilon), m_useCntkEngine(useCntkEngine), m_imageLayoutKind(imageLayoutKind), m_mbCount(0)
+        m_epsilon(epsilon), m_useCntkEngine(useCntkEngine), m_imageLayoutKind(imageLayoutKind), m_mbCount(0),
+        m_doPrint(false), m_convertRunningVariance(false)
     {
     }
     BatchNormalizationNode(const ScriptableObjects::IConfigRecordPtr configp) :
@@ -1671,12 +1673,13 @@ public:
 
         m_doPrint = true;
 
-        // TODO
-        // For CuDNN4 -> CuDNN 5 transformation
-        // modify runInvStdDev = Input(4)->Value();
-        // m_epsilon 
-        // n/n-1*(1/(old*old) - epsilon)
-        // m_mbCount / (m_mbCount -1) * (1/(old*old) - m_epsilon.
+        if (modelVersion < CNTK_MODEL_VERSION_11) 
+        {
+            // Prior to CNTK_MODEL_VERSION_11, running inverted standard
+            // deviation was stored in Input 4. We will convert it to
+            // running standard deviation during validation later.
+            m_convertRunningVariance = true;
+        }
     }
 
     void CopyTo(ComputationNodeBasePtr nodeP, const std::wstring& newName, const CopyNodeFlags flags) const override
@@ -1751,15 +1754,15 @@ public:
         const Matrix<ElemType>& scale     = Input(1)->Value();
         const Matrix<ElemType>& bias      = Input(2)->Value();
         Matrix<ElemType>& runMean         = Input(3)->Value();
-        Matrix<ElemType>& runInvStdDev    = Input(4)->Value();
+        Matrix<ElemType>& runStdDev       = Input(4)->Value();
         Matrix<ElemType> sliceOutputValue = ValueFor(fr);
 
         assert(scale.GetNumRows() == bias.GetNumRows());
         assert(scale.GetNumCols() == bias.GetNumCols());
         assert(runMean.GetNumRows() == scale.GetNumRows());
         assert(runMean.GetNumCols() == scale.GetNumCols());
-        assert(runMean.GetNumRows() == runInvStdDev.GetNumRows());
-        assert(runMean.GetNumCols() == runInvStdDev.GetNumCols());
+        assert(runMean.GetNumRows() == runStdDev.GetNumRows());
+        assert(runMean.GetNumCols() == runStdDev.GetNumCols());
 
         // determine the factors from the time constants
         double expAvgFactor = ComputeExpAvgFactor(); // weight for the new MB statistics in the running estimate. The previous value of the running statistics is kept with weight (1-this)
@@ -1767,7 +1770,7 @@ public:
 
         m_bnEng->Forward(/*in=*/ sliceInputValue, scale, bias, // (in)
                          expAvgFactor, blendFactor,
-                         runMean, runInvStdDev,                // (in/out) running estimates, updated from the current MB mean/stddev
+                         runMean, runStdDev,                   // (in/out) running estimates, updated from the current MB mean/stddev
                          /*out=*/ sliceOutputValue,            // (out) batch-normalized output value
                          m_epsilon,
                          *m_saveMean, *m_saveInvStdDev);       // (out) actual interpolated mean/stddev values. Note: unused/empty for blendFactor==1 for CNTK engine
@@ -1784,21 +1787,20 @@ public:
 
         if (inputIndex == 0) // derivative with respect to the input.
         {
-            auto sliceOutputGrad                 = GradientFor(fr);
-            auto sliceInputValue                 = Input(0)->ValueFor(fr);
-            const Matrix<ElemType>& scale        = Input(1)->Value();
-            const Matrix<ElemType>& bias         = Input(2)->Value();
-            const Matrix<ElemType>& runMean      = Input(3)->Value();
-            const Matrix<ElemType>& runInvStdDev = Input(4)->Value();
+            auto sliceOutputGrad              = GradientFor(fr);
+            auto sliceInputValue              = Input(0)->ValueFor(fr);
+            const Matrix<ElemType>& scale     = Input(1)->Value();
+            const Matrix<ElemType>& bias      = Input(2)->Value();
+            const Matrix<ElemType>& runMean   = Input(3)->Value();
+            const Matrix<ElemType>& runStdDev = Input(4)->Value();
 
             auto sliceInputGrad = Input(0)->GradientFor(fr);
             // The mean used in Forward() are either saveMean or runMean.
             // This is decided by the engine, which communicates back the decision by returning
             // an empty saveMean in case runMean should be used. Likewise for stddev.
-            if (m_saveInvStdDev->IsEmpty())
-                RuntimeError("TODO convert");
-            let& actualMean      = !m_saveMean->IsEmpty()      ? *m_saveMean      : runMean;      // empty if only the running mean is used
-            let& actualInvStdDev = !m_saveInvStdDev->IsEmpty() ? *m_saveInvStdDev : runInvStdDev; // TODO saveInvStdDev <-> runInvStdDev not the same
+            let& actualMean      = !m_saveMean->IsEmpty()      ? *m_saveMean      : runMean;   // empty if only the running mean is used
+            if (m_saveInvStdDev->IsEmpty()) RuntimeError("TODO m_saveInvStdDev <-> runStdDev not the same:");
+            let& actualInvStdDev = !m_saveInvStdDev->IsEmpty() ? *m_saveInvStdDev : runStdDev;
             m_dScale->Resize(scale); // gradients for scale and bias get stored here
             m_dBias->Resize(bias);
 
@@ -1826,7 +1828,7 @@ public:
             grad.SetValue(grad.GetNumRows(), grad.GetNumCols(), grad.GetDeviceId(), m_dBias->Data());
             // BUGBUG: ^^ Also here, this should add the gradient, not overwrite it.
         }
-        // No derivatives with respect to running mean and InvStdDev.
+        // No derivatives with respect to running mean and stddev.
     }
 
     virtual bool OutputUsedInComputingInputNodesGradients() const override { return false; }
@@ -1871,9 +1873,19 @@ public:
             bias.Print();
             fprintf(stderr, "--- %ls runMean after loading\n", NodeName().c_str());
             runMean.Print();
-            fprintf(stderr, "--- %ls runInvStdDev after loading\n", NodeName().c_str());
+            fprintf(stderr, "--- %ls run(Inv)StdDev after loading\n", NodeName().c_str());
             runInvStdDev.Print();
             m_doPrint = false;
+        }
+
+        if (m_convertRunningVariance)
+        {
+            // TODO
+            // For CuDNN4 -> CuDNN 5 transformation
+            // modify runInvStdDev = Input(4)->Value();
+            // m_epsilon 
+            // n/n-1*(1/(old*old) - epsilon)
+            // m_mbCount / (m_mbCount -1) * (1/(old*old) - m_epsilon.
         }
 
         if (isFinalValidationPass)
@@ -1996,7 +2008,7 @@ private:
     // Roughly, this specifies how many samples "worth" is the running statistics,
     // relative to the current minibatch statistics.
     // If 0, only use the current MB statistics. If infinity, use only the running mean, like in inference mode.
-    // The main idea is to estimate the mean/variance as a MAP estimate using the running mean/var as a prrior.
+    // The main idea is to estimate the mean/variance as a MAP estimate using the running mean/var as a prior.
     // This should make the method more robust to the case of very small minibatches,
     // and also provides a meaningful interpretation of inference mode, where only the prior is used.
     // Effectively, this ends up in a linear interpolation of running and minibatch statistics.
@@ -2006,7 +2018,7 @@ private:
     // REVIEW alexeyk: if this works, document it properly in Wiki.
     double m_blendTimeConst;
 
-    // Epsilon used to compute inverse std deviation.
+    // Epsilon used to compute inverse std deviation (m_saveInvStdDev).
     double m_epsilon;
     // Whether to use CNTK or cuDNN BN implementation.
     bool m_useCntkEngine;
@@ -2028,7 +2040,9 @@ private:
 
     std::unique_ptr<BatchNormEngine<ElemType>> m_bnEng;
 
-    bool m_doPrint = false;
+    bool m_doPrint;
+
+    bool m_convertRunningVariance;
 };
 
 template class BatchNormalizationNode<float>;
