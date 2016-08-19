@@ -489,10 +489,10 @@ BlockRandomizer::StartEpoch: epoch 7: samples [60000..70000] (first sequence at 
 08/18/2016 09:23:09: Starting minibatch loop.
 08/18/2016 09:23:09:  Epoch[ 7 of 50]-Minibatch[   1-  10, 14.29%]: CrossEntropyWithSoftmax = 0.17653030 * 1280; EvalErrorPrediction = 0.06875000 * 1280; time = 0.0159s; samplesPerSecond = 80493.0
 08/18/2016 09:23:09:  Epoch[ 7 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.17294422 * 1280; EvalErrorPrediction = 0.08125000 * 1280; time = 0.0177s; samplesPerSecond = 72283.7
-08/18/2016 09:23:09:  Epoch[ 7 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.17368841 * 1280; EvalErrorPrediction = 0.07890625 * 1280; time = 0.0160s; samplesPerSecond = 79815.4
+08/18/2016 09:23:09:  Epoch[ 7 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.17368841 * 1280; EvalErrorPrediction = 0.07920625 * 1280; time = 0.0160s; samplesPerSecond = 79815.4
 08/18/2016 09:23:09:  Epoch[ 7 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.16366272 * 1280; EvalErrorPrediction = 0.06718750 * 1280; time = 0.0165s; samplesPerSecond = 77665.2
 08/18/2016 09:23:09:  Epoch[ 7 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.16037722 * 1280; EvalErrorPrediction = 0.06484375 * 1280; time = 0.0159s; samplesPerSecond = 80488.0
-08/18/2016 09:23:09:  Epoch[ 7 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.19018154 * 1280; EvalErrorPrediction = 0.08437500 * 1280; time = 0.0159s; samplesPerSecond = 80422.2
+08/18/2016 09:23:09:  Epoch[ 7 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.19018154 * 1280; EvalErrorPrediction = 0.08477500 * 1280; time = 0.0159s; samplesPerSecond = 80422.2
 08/18/2016 09:23:09:  Epoch[ 7 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.17999439 * 1280; EvalErrorPrediction = 0.08906250 * 1280; time = 0.0159s; samplesPerSecond = 80361.6
 08/18/2016 09:23:09: Finished Epoch[ 7 of 50]: [Training] CrossEntropyWithSoftmax = 0.17464830 * 10000; EvalErrorPrediction = 0.07680000 * 10000; totalSamplesSeen = 70000; learningRatePerSample = 0.1; epochTime=0.128699s
 08/18/2016 09:23:09: SGD: Saving checkpoint model 'C:\Users\svcphil\AppData\Local\Temp\cntk-test-20160818091536.638579\Speech_Simple@release_cpu/models/simple.dnn.7'
@@ -519,7 +519,7 @@ BlockRandomizer::StartEpoch: epoch 9: samples [80000..90000] (first sequence at 
 08/18/2016 09:23:10:  Epoch[ 9 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.20796409 * 1280; EvalErrorPrediction = 0.08281250 * 1280; time = 0.0179s; samplesPerSecond = 71596.4
 08/18/2016 09:23:10:  Epoch[ 9 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.19792776 * 1280; EvalErrorPrediction = 0.09609375 * 1280; time = 0.0159s; samplesPerSecond = 80296.1
 08/18/2016 09:23:10:  Epoch[ 9 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.19371848 * 1280; EvalErrorPrediction = 0.08046875 * 1280; time = 0.0164s; samplesPerSecond = 77882.6
-08/18/2016 09:23:10:  Epoch[ 9 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.18505373 * 1280; EvalErrorPrediction = 0.07812500 * 1280; time = 0.0159s; samplesPerSecond = 80417.2
+08/18/2016 09:23:10:  Epoch[ 9 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.18505373 * 1280; EvalErrorPrediction = 0.08852500 * 1280; time = 0.0159s; samplesPerSecond = 80417.2
 08/18/2016 09:23:10:  Epoch[ 9 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.17269211 * 1280; EvalErrorPrediction = 0.07500000 * 1280; time = 0.0158s; samplesPerSecond = 80915.4
 08/18/2016 09:23:10:  Epoch[ 9 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.17060089 * 1280; EvalErrorPrediction = 0.07734375 * 1280; time = 0.0158s; samplesPerSecond = 80976.8
 08/18/2016 09:23:10: Finished Epoch[ 9 of 50]: [Training] CrossEntropyWithSoftmax = 0.19135530 * 10000; EvalErrorPrediction = 0.08190000 * 10000; totalSamplesSeen = 90000; learningRatePerSample = 0.1; epochTime=0.128878s
@@ -557,7 +557,7 @@ BlockRandomizer::StartEpoch: epoch 11: samples [100000..110000] (first sequence 
 BlockRandomizer::StartEpoch: epoch 12: samples [110000..120000] (first sequence at sample 110000), worker rank 0, total workers 1
 
 08/18/2016 09:23:10: Starting minibatch loop.
-08/18/2016 09:23:10:  Epoch[12 of 50]-Minibatch[   1-  10, 14.29%]: CrossEntropyWithSoftmax = 0.19255348 * 1280; EvalErrorPrediction = 0.08515625 * 1280; time = 0.0158s; samplesPerSecond = 81259.5
+08/18/2016 09:23:10:  Epoch[12 of 50]-Minibatch[   1-  10, 14.29%]: CrossEntropyWithSoftmax = 0.19255348 * 1280; EvalErrorPrediction = 0.08555625 * 1280; time = 0.0158s; samplesPerSecond = 81259.5
 08/18/2016 09:23:10:  Epoch[12 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.16854106 * 1280; EvalErrorPrediction = 0.07734375 * 1280; time = 0.0176s; samplesPerSecond = 72822.4
 08/18/2016 09:23:10:  Epoch[12 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.17581871 * 1280; EvalErrorPrediction = 0.08906250 * 1280; time = 0.0159s; samplesPerSecond = 80752.0
 08/18/2016 09:23:10:  Epoch[12 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.17771955 * 1280; EvalErrorPrediction = 0.08671875 * 1280; time = 0.0158s; samplesPerSecond = 80843.8
@@ -589,7 +589,7 @@ BlockRandomizer::StartEpoch: epoch 14: samples [130000..140000] (first sequence 
 08/18/2016 09:23:11:  Epoch[14 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.21171846 * 1280; EvalErrorPrediction = 0.07578125 * 1280; time = 0.0165s; samplesPerSecond = 77773.7
 08/18/2016 09:23:11:  Epoch[14 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.22919979 * 1280; EvalErrorPrediction = 0.08906250 * 1280; time = 0.0149s; samplesPerSecond = 85854.2
 08/18/2016 09:23:11:  Epoch[14 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.24511843 * 1280; EvalErrorPrediction = 0.09687500 * 1280; time = 0.0148s; samplesPerSecond = 86779.7
-08/18/2016 09:23:11:  Epoch[14 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.20996313 * 1280; EvalErrorPrediction = 0.07734375 * 1280; time = 0.0147s; samplesPerSecond = 86974.2
+08/18/2016 09:23:11:  Epoch[14 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.20996313 * 1280; EvalErrorPrediction = 0.07774375 * 1280; time = 0.0147s; samplesPerSecond = 86974.2
 08/18/2016 09:23:11:  Epoch[14 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.15947819 * 1280; EvalErrorPrediction = 0.07421875 * 1280; time = 0.0148s; samplesPerSecond = 86433.9
 08/18/2016 09:23:11:  Epoch[14 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.16172314 * 1280; EvalErrorPrediction = 0.07109375 * 1280; time = 0.0147s; samplesPerSecond = 86820.9
 08/18/2016 09:23:11: Finished Epoch[14 of 50]: [Training] CrossEntropyWithSoftmax = 0.20098990 * 10000; EvalErrorPrediction = 0.08090000 * 10000; totalSamplesSeen = 140000; learningRatePerSample = 0.1; epochTime=0.119159s
@@ -632,7 +632,7 @@ BlockRandomizer::StartEpoch: epoch 17: samples [160000..170000] (first sequence 
 08/18/2016 09:23:12:  Epoch[17 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.20846658 * 1280; EvalErrorPrediction = 0.09531250 * 1280; time = 0.0148s; samplesPerSecond = 86509.9
 08/18/2016 09:23:12:  Epoch[17 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.17157269 * 1280; EvalErrorPrediction = 0.07812500 * 1280; time = 0.0155s; samplesPerSecond = 82735.4
 08/18/2016 09:23:12:  Epoch[17 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.17115402 * 1280; EvalErrorPrediction = 0.08828125 * 1280; time = 0.0148s; samplesPerSecond = 86750.3
-08/18/2016 09:23:12:  Epoch[17 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.17137775 * 1280; EvalErrorPrediction = 0.07109375 * 1280; time = 0.0147s; samplesPerSecond = 86897.5
+08/18/2016 09:23:12:  Epoch[17 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.17137775 * 1280; EvalErrorPrediction = 0.07149375 * 1280; time = 0.0147s; samplesPerSecond = 86897.5
 08/18/2016 09:23:12:  Epoch[17 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.16963568 * 1280; EvalErrorPrediction = 0.07109375 * 1280; time = 0.0148s; samplesPerSecond = 86527.4
 08/18/2016 09:23:12: Finished Epoch[17 of 50]: [Training] CrossEntropyWithSoftmax = 0.18151743 * 10000; EvalErrorPrediction = 0.08230000 * 10000; totalSamplesSeen = 170000; learningRatePerSample = 0.1; epochTime=0.119618s
 08/18/2016 09:23:12: SGD: Saving checkpoint model 'C:\Users\svcphil\AppData\Local\Temp\cntk-test-20160818091536.638579\Speech_Simple@release_cpu/models/simple.dnn.17'
@@ -647,7 +647,7 @@ BlockRandomizer::StartEpoch: epoch 18: samples [170000..180000] (first sequence 
 08/18/2016 09:23:12:  Epoch[18 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.15812569 * 1280; EvalErrorPrediction = 0.07421875 * 1280; time = 0.0158s; samplesPerSecond = 80976.8
 08/18/2016 09:23:12:  Epoch[18 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.15216236 * 1280; EvalErrorPrediction = 0.07109375 * 1280; time = 0.0158s; samplesPerSecond = 81125.6
 08/18/2016 09:23:12:  Epoch[18 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.15943112 * 1280; EvalErrorPrediction = 0.07265625 * 1280; time = 0.0158s; samplesPerSecond = 81208.0
-08/18/2016 09:23:12:  Epoch[18 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.15781136 * 1280; EvalErrorPrediction = 0.06796875 * 1280; time = 0.0157s; samplesPerSecond = 81482.0
+08/18/2016 09:23:12:  Epoch[18 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.15781136 * 1280; EvalErrorPrediction = 0.06836875 * 1280; time = 0.0157s; samplesPerSecond = 81482.0
 08/18/2016 09:23:12: Finished Epoch[18 of 50]: [Training] CrossEntropyWithSoftmax = 0.15980299 * 10000; EvalErrorPrediction = 0.07440000 * 10000; totalSamplesSeen = 180000; learningRatePerSample = 0.1; epochTime=0.127099s
 08/18/2016 09:23:12: SGD: Saving checkpoint model 'C:\Users\svcphil\AppData\Local\Temp\cntk-test-20160818091536.638579\Speech_Simple@release_cpu/models/simple.dnn.18'
 
@@ -655,11 +655,11 @@ BlockRandomizer::StartEpoch: epoch 18: samples [170000..180000] (first sequence 
 BlockRandomizer::StartEpoch: epoch 19: samples [180000..190000] (first sequence at sample 180000), worker rank 0, total workers 1
 
 08/18/2016 09:23:12: Starting minibatch loop.
-08/18/2016 09:23:12:  Epoch[19 of 50]-Minibatch[   1-  10, 14.29%]: CrossEntropyWithSoftmax = 0.15393217 * 1280; EvalErrorPrediction = 0.07812500 * 1280; time = 0.0147s; samplesPerSecond = 86838.5
+08/18/2016 09:23:12:  Epoch[19 of 50]-Minibatch[   1-  10, 14.29%]: CrossEntropyWithSoftmax = 0.15393217 * 1280; EvalErrorPrediction = 0.07772500 * 1280; time = 0.0147s; samplesPerSecond = 86838.5
 08/18/2016 09:23:12:  Epoch[19 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.14662540 * 1280; EvalErrorPrediction = 0.06953125 * 1280; time = 0.0165s; samplesPerSecond = 77754.8
 08/18/2016 09:23:12:  Epoch[19 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.16555657 * 1280; EvalErrorPrediction = 0.08359375 * 1280; time = 0.0147s; samplesPerSecond = 87063.0
 08/18/2016 09:23:12:  Epoch[19 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.15092411 * 1280; EvalErrorPrediction = 0.06796875 * 1280; time = 0.0148s; samplesPerSecond = 86773.8
-08/18/2016 09:23:12:  Epoch[19 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.18199005 * 1280; EvalErrorPrediction = 0.08671875 * 1280; time = 0.0148s; samplesPerSecond = 86445.6
+08/18/2016 09:23:12:  Epoch[19 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.18199005 * 1280; EvalErrorPrediction = 0.08631875 * 1280; time = 0.0148s; samplesPerSecond = 86445.6
 08/18/2016 09:23:12:  Epoch[19 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.16240711 * 1280; EvalErrorPrediction = 0.07031250 * 1280; time = 0.0147s; samplesPerSecond = 86815.0
 08/18/2016 09:23:12:  Epoch[19 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.17171764 * 1280; EvalErrorPrediction = 0.08984375 * 1280; time = 0.0168s; samplesPerSecond = 76077.3
 08/18/2016 09:23:12: Finished Epoch[19 of 50]: [Training] CrossEntropyWithSoftmax = 0.16261082 * 10000; EvalErrorPrediction = 0.07790000 * 10000; totalSamplesSeen = 190000; learningRatePerSample = 0.1; epochTime=0.120971s
@@ -715,7 +715,7 @@ BlockRandomizer::StartEpoch: epoch 23: samples [220000..230000] (first sequence 
 08/18/2016 09:23:13:  Epoch[23 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.17199432 * 1280; EvalErrorPrediction = 0.09140625 * 1280; time = 0.0165s; samplesPerSecond = 77575.8
 08/18/2016 09:23:13:  Epoch[23 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.15117135 * 1280; EvalErrorPrediction = 0.07109375 * 1280; time = 0.0153s; samplesPerSecond = 83813.5
 08/18/2016 09:23:13:  Epoch[23 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.17853627 * 1280; EvalErrorPrediction = 0.08046875 * 1280; time = 0.0148s; samplesPerSecond = 86597.7
-08/18/2016 09:23:13:  Epoch[23 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.15493231 * 1280; EvalErrorPrediction = 0.07656250 * 1280; time = 0.0148s; samplesPerSecond = 86474.8
+08/18/2016 09:23:13:  Epoch[23 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.15493231 * 1280; EvalErrorPrediction = 0.07696250 * 1280; time = 0.0148s; samplesPerSecond = 86474.8
 08/18/2016 09:23:13:  Epoch[23 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.16575298 * 1280; EvalErrorPrediction = 0.07343750 * 1280; time = 0.0148s; samplesPerSecond = 86253.4
 08/18/2016 09:23:13:  Epoch[23 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.15395060 * 1280; EvalErrorPrediction = 0.07656250 * 1280; time = 0.0148s; samplesPerSecond = 86311.5
 08/18/2016 09:23:13: Finished Epoch[23 of 50]: [Training] CrossEntropyWithSoftmax = 0.16410748 * 10000; EvalErrorPrediction = 0.07790000 * 10000; totalSamplesSeen = 230000; learningRatePerSample = 0.1; epochTime=0.119816s
@@ -922,7 +922,7 @@ BlockRandomizer::StartEpoch: epoch 38: samples [370000..380000] (first sequence 
 
 08/18/2016 09:23:17: Starting minibatch loop.
 08/18/2016 09:23:17:  Epoch[38 of 50]-Minibatch[   1-  10, 14.29%]: CrossEntropyWithSoftmax = 0.16853386 * 1280; EvalErrorPrediction = 0.08750000 * 1280; time = 0.0147s; samplesPerSecond = 87360.1
-08/18/2016 09:23:17:  Epoch[38 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.14644064 * 1280; EvalErrorPrediction = 0.07812500 * 1280; time = 0.0165s; samplesPerSecond = 77500.6
+08/18/2016 09:23:17:  Epoch[38 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.14644064 * 1280; EvalErrorPrediction = 0.07872500 * 1280; time = 0.0165s; samplesPerSecond = 77500.6
 08/18/2016 09:23:17:  Epoch[38 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.14097066 * 1280; EvalErrorPrediction = 0.07500000 * 1280; time = 0.0149s; samplesPerSecond = 85946.4
 08/18/2016 09:23:17:  Epoch[38 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.16172438 * 1280; EvalErrorPrediction = 0.08906250 * 1280; time = 0.0148s; samplesPerSecond = 86346.5
 08/18/2016 09:23:17:  Epoch[38 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.13763309 * 1280; EvalErrorPrediction = 0.06640625 * 1280; time = 0.0148s; samplesPerSecond = 86439.8
@@ -950,7 +950,7 @@ BlockRandomizer::StartEpoch: epoch 40: samples [390000..400000] (first sequence 
 
 08/18/2016 09:23:17: Starting minibatch loop.
 08/18/2016 09:23:17:  Epoch[40 of 50]-Minibatch[   1-  10, 14.29%]: CrossEntropyWithSoftmax = 0.18147442 * 1280; EvalErrorPrediction = 0.09531250 * 1280; time = 0.0152s; samplesPerSecond = 84182.8
-08/18/2016 09:23:17:  Epoch[40 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.15084016 * 1280; EvalErrorPrediction = 0.07109375 * 1280; time = 0.0165s; samplesPerSecond = 77585.2
+08/18/2016 09:23:17:  Epoch[40 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.15084016 * 1280; EvalErrorPrediction = 0.07149375 * 1280; time = 0.0165s; samplesPerSecond = 77585.2
 08/18/2016 09:23:17:  Epoch[40 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.15693560 * 1280; EvalErrorPrediction = 0.07968750 * 1280; time = 0.0149s; samplesPerSecond = 86160.5
 08/18/2016 09:23:17:  Epoch[40 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.15859179 * 1280; EvalErrorPrediction = 0.07578125 * 1280; time = 0.0147s; samplesPerSecond = 86832.6
 08/18/2016 09:23:17:  Epoch[40 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.16059690 * 1280; EvalErrorPrediction = 0.08125000 * 1280; time = 0.0148s; samplesPerSecond = 86562.5
@@ -1035,7 +1035,7 @@ BlockRandomizer::StartEpoch: epoch 46: samples [450000..460000] (first sequence 
 08/18/2016 09:23:18: Starting minibatch loop.
 08/18/2016 09:23:18:  Epoch[46 of 50]-Minibatch[   1-  10, 14.29%]: CrossEntropyWithSoftmax = 0.12665298 * 1280; EvalErrorPrediction = 0.05937500 * 1280; time = 0.0158s; samplesPerSecond = 81218.3
 08/18/2016 09:23:18:  Epoch[46 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.16434898 * 1280; EvalErrorPrediction = 0.08046875 * 1280; time = 0.0175s; samplesPerSecond = 73222.4
-08/18/2016 09:23:18:  Epoch[46 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.14385383 * 1280; EvalErrorPrediction = 0.07578125 * 1280; time = 0.0157s; samplesPerSecond = 81352.5
+08/18/2016 09:23:18:  Epoch[46 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.14385383 * 1280; EvalErrorPrediction = 0.07548125 * 1280; time = 0.0157s; samplesPerSecond = 81352.5
 08/18/2016 09:23:19:  Epoch[46 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.13879824 * 1280; EvalErrorPrediction = 0.07031250 * 1280; time = 0.0157s; samplesPerSecond = 81399.0
 08/18/2016 09:23:19:  Epoch[46 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.14248524 * 1280; EvalErrorPrediction = 0.06562500 * 1280; time = 0.0157s; samplesPerSecond = 81585.8
 08/18/2016 09:23:19:  Epoch[46 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.14791856 * 1280; EvalErrorPrediction = 0.07421875 * 1280; time = 0.0161s; samplesPerSecond = 79355.2
@@ -1049,7 +1049,7 @@ BlockRandomizer::StartEpoch: epoch 47: samples [460000..470000] (first sequence 
 08/18/2016 09:23:19: Starting minibatch loop.
 08/18/2016 09:23:19:  Epoch[47 of 50]-Minibatch[   1-  10, 14.29%]: CrossEntropyWithSoftmax = 0.14703878 * 1280; EvalErrorPrediction = 0.08203125 * 1280; time = 0.0158s; samplesPerSecond = 81146.2
 08/18/2016 09:23:19:  Epoch[47 of 50]-Minibatch[  11-  20, 28.57%]: CrossEntropyWithSoftmax = 0.15384475 * 1280; EvalErrorPrediction = 0.08437500 * 1280; time = 0.0178s; samplesPerSecond = 71833.4
-08/18/2016 09:23:19:  Epoch[47 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.15466433 * 1280; EvalErrorPrediction = 0.08671875 * 1280; time = 0.0158s; samplesPerSecond = 81151.3
+08/18/2016 09:23:19:  Epoch[47 of 50]-Minibatch[  21-  30, 42.86%]: CrossEntropyWithSoftmax = 0.15466433 * 1280; EvalErrorPrediction = 0.08711875 * 1280; time = 0.0158s; samplesPerSecond = 81151.3
 08/18/2016 09:23:19:  Epoch[47 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.11875772 * 1280; EvalErrorPrediction = 0.06484375 * 1280; time = 0.0157s; samplesPerSecond = 81311.1
 08/18/2016 09:23:19:  Epoch[47 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.13452339 * 1280; EvalErrorPrediction = 0.07421875 * 1280; time = 0.0158s; samplesPerSecond = 81099.9
 08/18/2016 09:23:19:  Epoch[47 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.15135207 * 1280; EvalErrorPrediction = 0.07812500 * 1280; time = 0.0157s; samplesPerSecond = 81306.0
@@ -1095,7 +1095,7 @@ BlockRandomizer::StartEpoch: epoch 50: samples [490000..500000] (first sequence 
 08/18/2016 09:23:19:  Epoch[50 of 50]-Minibatch[  31-  40, 57.14%]: CrossEntropyWithSoftmax = 0.14866614 * 1280; EvalErrorPrediction = 0.08125000 * 1280; time = 0.0148s; samplesPerSecond = 86265.0
 08/18/2016 09:23:19:  Epoch[50 of 50]-Minibatch[  41-  50, 71.43%]: CrossEntropyWithSoftmax = 0.13444252 * 1280; EvalErrorPrediction = 0.06640625 * 1280; time = 0.0148s; samplesPerSecond = 86201.1
 08/18/2016 09:23:19:  Epoch[50 of 50]-Minibatch[  51-  60, 85.71%]: CrossEntropyWithSoftmax = 0.14465528 * 1280; EvalErrorPrediction = 0.07265625 * 1280; time = 0.0149s; samplesPerSecond = 86108.3
-08/18/2016 09:23:20:  Epoch[50 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.14756641 * 1280; EvalErrorPrediction = 0.06953125 * 1280; time = 0.0148s; samplesPerSecond = 86381.4
+08/18/2016 09:23:20:  Epoch[50 of 50]-Minibatch[  61-  70, 100.00%]: CrossEntropyWithSoftmax = 0.14756641 * 1280; EvalErrorPrediction = 0.06913125 * 1280; time = 0.0148s; samplesPerSecond = 86381.4
 08/18/2016 09:23:20: Finished Epoch[50 of 50]: [Training] CrossEntropyWithSoftmax = 0.14188734 * 10000; EvalErrorPrediction = 0.07390000 * 10000; totalSamplesSeen = 500000; learningRatePerSample = 0.1; epochTime=0.11994s
 08/18/2016 09:23:20: SGD: Saving checkpoint model 'C:\Users\svcphil\AppData\Local\Temp\cntk-test-20160818091536.638579\Speech_Simple@release_cpu/models/simple.dnn'
 08/18/2016 09:23:20: CNTKCommandTrainEnd: Simple_Demo
